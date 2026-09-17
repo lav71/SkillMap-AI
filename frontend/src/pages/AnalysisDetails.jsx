@@ -17,7 +17,7 @@ const AnalysisDetails = () => {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:5000/api/analyze/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/analyze/${id}`,
                 {
                     method: "GET",
                     headers: {
@@ -44,7 +44,6 @@ const AnalysisDetails = () => {
         }
     };
 
-    /* ================= LOADING ================= */
 
     if (loading) {
         return (
@@ -64,7 +63,6 @@ const AnalysisDetails = () => {
         );
     }
 
-    /* ================= ERROR ================= */
 
     if (error) {
         return (
@@ -103,8 +101,6 @@ const AnalysisDetails = () => {
     return (
         <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#020617] text-white">
 
-            {/* ================= NAVBAR ================= */}
-
             <nav className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0f172a]/95 backdrop-blur">
 
                 <div className="mx-auto flex w-full max-w-7xl min-w-0 items-center justify-between gap-3 px-3 py-4 sm:px-6 sm:py-5 lg:px-8">
@@ -130,11 +126,8 @@ const AnalysisDetails = () => {
                 </div>
             </nav>
 
-            {/* ================= MAIN ================= */}
 
             <main className="mx-auto w-full max-w-6xl min-w-0 px-3 py-7 sm:px-6 sm:py-12 lg:px-8">
-
-                {/* ================= HEADING ================= */}
 
                 <div className="mx-auto mb-8 w-full max-w-3xl min-w-0 text-center sm:mb-10">
 
@@ -153,8 +146,6 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= MATCH SCORE ================= */}
-
                 <div className="mb-6 w-full min-w-0 overflow-hidden rounded-2xl border border-blue-500/20 bg-[#0f172a] p-5 text-center shadow-xl sm:p-8">
 
                     <p className="text-sm text-slate-400 sm:text-base">
@@ -164,8 +155,6 @@ const AnalysisDetails = () => {
                     <div className="mt-3 text-5xl font-bold text-blue-500 sm:text-6xl lg:text-7xl">
                         {matchPercentage}%
                     </div>
-
-                    {/* Progress */}
 
                     <div className="mx-auto mt-5 h-2 w-full max-w-xl overflow-hidden rounded-full bg-slate-800">
 
@@ -184,11 +173,7 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= SKILLS ================= */}
-
                 <div className="mb-6 grid w-full min-w-0 grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3">
-
-                    {/* MATCHED */}
 
                     <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-green-500/20 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -227,8 +212,6 @@ const AnalysisDetails = () => {
 
                     </div>
 
-                    {/* PARTIAL */}
-
                     <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-yellow-500/20 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
                         <div className="mb-4 flex min-w-0 items-center justify-between gap-3">
@@ -266,7 +249,6 @@ const AnalysisDetails = () => {
 
                     </div>
 
-                    {/* MISSING */}
 
                     <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -307,7 +289,6 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= EXPERIENCE ================= */}
 
                 <div className="mb-6 w-full min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -329,8 +310,6 @@ const AnalysisDetails = () => {
                     </p>
 
                 </div>
-
-                {/* ================= RESUME IMPROVEMENTS ================= */}
 
                 <div className="mb-6 w-full min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -375,7 +354,6 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= LEARNING ROADMAP ================= */}
 
                 <div className="mb-6 w-full min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -458,7 +436,6 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= INTERVIEW QUESTIONS ================= */}
 
                 <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-[#0f172a] p-5 shadow-xl sm:p-6">
 
@@ -513,7 +490,6 @@ const AnalysisDetails = () => {
 
                 </div>
 
-                {/* ================= BACK BUTTON ================= */}
 
                 <div className="mt-8 flex justify-center">
 

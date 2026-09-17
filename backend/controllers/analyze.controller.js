@@ -4,18 +4,9 @@ import groq from "../services/groq.service.js";
 import { PDFParse } from "pdf-parse";
 import Analysis from "../models/analysis.model.js";
 
-
-// ======================================================
-// ANALYSIS VERSION
-// ======================================================
-
 const ANALYSIS_VERSION = "v2";
 
-
-// ======================================================
 // NORMALIZE TEXT
-// ======================================================
-
 const normalizeText = (text = "") => {
     return text
         .toLowerCase()
@@ -24,9 +15,7 @@ const normalizeText = (text = "") => {
 };
 
 
-// ======================================================
 // CREATE UNIQUE ANALYSIS KEY
-// ======================================================
 
 const createAnalysisKey = (
     userId,
@@ -48,9 +37,7 @@ const createAnalysisKey = (
 };
 
 
-// ======================================================
 // PARSE AI RESPONSE
-// ======================================================
 
 const parseAIResponse = (content) => {
 
@@ -87,9 +74,7 @@ const parseAIResponse = (content) => {
 };
 
 
-// ======================================================
 // NORMALIZE SKILLS
-// ======================================================
 
 const normalizeSkills = (skills) => {
 
@@ -125,9 +110,8 @@ const normalizeSkills = (skills) => {
 };
 
 
-// ======================================================
+
 // REMOVE OVERLAPPING SKILLS
-// ======================================================
 
 const removeOverlaps = (
     matchedSkills,
@@ -170,9 +154,7 @@ const removeOverlaps = (
 };
 
 
-// ======================================================
 // FORMAT RESPONSE
-// ======================================================
 
 const formatAnalysisResponse = (analysis) => {
 
@@ -212,17 +194,12 @@ const formatAnalysisResponse = (analysis) => {
 };
 
 
-// ======================================================
 // ANALYZE RESUME
-// ======================================================
 
 export const analyzeResume = async (req, res) => {
 
     try {
-
-        // --------------------------------------------------
         // CHECK USER
-        // --------------------------------------------------
 
         const userId = req.user_id;
 
@@ -235,9 +212,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // --------------------------------------------------
         // CHECK RESUME
-        // --------------------------------------------------
 
         if (!req.file) {
 
@@ -248,9 +223,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // --------------------------------------------------
         // CHECK JOB DESCRIPTION
-        // --------------------------------------------------
 
         const jobDescription =
             req.body.jobDescription?.trim();
@@ -265,9 +238,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // --------------------------------------------------
         // EXTRACT PDF TEXT
-        // --------------------------------------------------
 
         let resumeText = "";
 
@@ -299,9 +270,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // --------------------------------------------------
         // CHECK RESUME TEXT
-        // --------------------------------------------------
 
         if (!resumeText) {
 
@@ -313,9 +282,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // --------------------------------------------------
         // CREATE ANALYSIS KEY
-        // --------------------------------------------------
 
         const analysisKey =
             createAnalysisKey(
@@ -331,10 +298,7 @@ export const analyzeResume = async (req, res) => {
         );
 
 
-        // ==================================================
         // CHECK MONGODB FIRST
-        // ==================================================
-
         const existingAnalysis =
             await Analysis.findOne({
                 user: userId,
@@ -379,9 +343,7 @@ export const analyzeResume = async (req, res) => {
         }
 
 
-        // ==================================================
         // AI PROMPT
-        // ==================================================
 
         const prompt = `
 
@@ -446,9 +408,7 @@ END INPUT
 `;
 
 
-        // ==================================================
         // GROQ AI CALL
-        // ==================================================
 
         console.log(
             "Sending new analysis to Groq..."
@@ -486,10 +446,7 @@ END INPUT
             });
 
 
-        // ==================================================
         // GET AI CONTENT
-        // ==================================================
-
         const aiContent =
             response
                 ?.choices?.[0]
@@ -510,17 +467,13 @@ END INPUT
         );
 
 
-        // ==================================================
         // PARSE RESPONSE
-        // ==================================================
 
         const aiResult =
             parseAIResponse(aiContent);
 
 
-        // ==================================================
         // NORMALIZE SKILLS
-        // ==================================================
 
         let matchedSkills =
             normalizeSkills(
@@ -540,9 +493,7 @@ END INPUT
             );
 
 
-        // ==================================================
         // REMOVE DUPLICATES / OVERLAPS
-        // ==================================================
 
         const cleaned =
             removeOverlaps(
@@ -562,9 +513,7 @@ END INPUT
             cleaned.missingSkills;
 
 
-        // ==================================================
         // CALCULATE MATCH PERCENTAGE
-        // ==================================================
 
         const totalSkills =
             matchedSkills.length +
@@ -590,9 +539,7 @@ END INPUT
         }
 
 
-        // ==================================================
         // EXPERIENCE ANALYSIS
-        // ==================================================
 
         const experienceAnalysis =
             typeof aiResult.experienceAnalysis ===
@@ -603,9 +550,7 @@ END INPUT
                 : "";
 
 
-        // ==================================================
         // RESUME IMPROVEMENTS
-        // ==================================================
 
         const resumeImprovements =
             Array.isArray(
@@ -626,9 +571,7 @@ END INPUT
                 : [];
 
 
-        // ==================================================
         // LEARNING ROADMAP
-        // ==================================================
 
         const learningRoadmap =
             Array.isArray(
@@ -676,9 +619,8 @@ END INPUT
                 : [];
 
 
-        // ==================================================
+
         // INTERVIEW QUESTIONS
-        // ==================================================
 
         const interviewQuestions =
             Array.isArray(
@@ -699,9 +641,7 @@ END INPUT
                 : [];
 
 
-        // ==================================================
         // FINAL ANALYSIS OBJECT
-        // ==================================================
 
         const analysisData = {
 
@@ -741,9 +681,8 @@ END INPUT
         };
 
 
-        // ==================================================
+
         // SAVE TO MONGODB
-        // ==================================================
 
         try {
 
@@ -792,10 +731,7 @@ END INPUT
 
 
         } catch (saveError) {
-
-            // ----------------------------------------------
             // DUPLICATE KEY
-            // ----------------------------------------------
 
             if (
                 saveError.code === 11000
@@ -871,9 +807,7 @@ END INPUT
 };
 
 
-// ======================================================
 // GET ANALYSIS HISTORY
-// ======================================================
 
 export const getAnalysisHistory =
     async (req, res) => {
@@ -935,9 +869,8 @@ export const getAnalysisHistory =
     };
 
 
-// ======================================================
+
 // GET ANALYSIS BY ID
-// ======================================================
 
 export const getAnalysisById =
     async (req, res) => {
